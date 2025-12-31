@@ -3,410 +3,238 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE KING | Cinematic Experience</title>
+    <title>THE KING | Video Experience</title>
     
-    <!-- الخطوط السينمائية -->
+    <!-- الخطوط -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@1,400&family=Montserrat:wght@300;400;600&family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Tajawal:wght@300;400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
-        /* --- Reset & Base --- */
         * { margin: 0; padding: 0; box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
         
         body {
-            background-color: #000000;
+            background-color: #000;
             color: #fff;
+            font-family: 'Tajawal', sans-serif;
             height: 100vh;
             width: 100%;
             overflow: hidden; 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Montserrat', sans-serif;
+            display: flex; justify-content: center; align-items: center;
         }
 
-        /* --- الإطار السينمائي (The Frame) --- */
-        .cinema-frame {
-            position: relative;
-            width: 95vw;
-            height: 95vh;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 0 100px rgba(0, 0, 0, 0.9);
-            overflow: hidden; /* أي شيء يخرج عن الإطار يختفي */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: radial-gradient(circle at 50% 120%, #0a1124 0%, #000000 70%);
-        }
-
-        /* --- النجوم الخلفية --- */
-        .stars {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: url('https://www.transparenttextures.com/patterns/stardust.png');
-            opacity: 0.4;
-            animation: twinkle 5s infinite alternate;
-            z-index: 1;
-        }
-
-        /* --- الأرض المتحركة (Realistic Earth) --- */
-        .earth-container {
-            position: absolute;
-            bottom: -60%; /* تظهر جزئياً من الأسفل */
-            left: 50%;
-            transform: translateX(-50%);
-            width: 140vh;
-            height: 140vh;
-            border-radius: 50%;
-            z-index: 2;
-            box-shadow: 0 -30px 100px rgba(40, 80, 200, 0.15);
-            overflow: hidden;
-        }
-
-        .earth-texture {
-            width: 200%;
-            height: 100%;
-            background: url('https://assets.codepen.io/1948355/earth_texture_flat.jpg') repeat-x;
-            background-size: 50% 100%;
-            opacity: 0.6;
-            filter: brightness(0.7) contrast(1.2) hue-rotate(200deg); /* لون أزرق عميق */
-            animation: earthSpin 120s linear infinite;
-        }
-        
-        .earth-shadow {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            border-radius: 50%;
-            background: radial-gradient(circle at 50% 0%, transparent 40%, #000 90%);
-            z-index: 3;
-        }
-
-        /* --- الطبقات (Parallax) --- */
-        
-        /* 1. النص العملاق (THE KING) */
-        .big-title {
-            position: absolute;
-            top: 48%; left: 50%;
-            transform: translate(-50%, -50%);
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 20vw; /* ضخم جداً */
-            line-height: 0.8;
-            color: #fff;
-            white-space: nowrap;
-            z-index: 3; /* خلف الرائد */
-            letter-spacing: 15px;
-            /* تدرج شفاف للنص */
-            mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%);
-            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%);
-            opacity: 0;
-            animation: textReveal 2.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards 0.5s;
-        }
-
-        /* 2. رائد الفضاء (Zero Gravity) */
-        .astronaut-container {
-            position: absolute;
-            z-index: 4; /* أمام النص */
+        /* --- فيديو الخلفية --- */
+        #bg-video {
+            position: fixed;
             top: 50%; left: 50%;
+            min-width: 100%; min-height: 100%;
+            width: auto; height: auto;
             transform: translate(-50%, -50%);
-            width: 50vh; /* حجم مناسب */
-            height: 60vh;
-            pointer-events: none;
-            opacity: 0;
-            animation: fadeZoomIn 2s ease-out forwards 1s, zeroGravity 10s ease-in-out infinite 3s;
+            z-index: -1;
+            object-fit: cover; /* يضمن ملء الشاشة */
+            filter: brightness(0.6); /* تعتيم بسيط ليظهر النص بوضوح */
         }
 
-        .astronaut-img {
-            width: 100%; height: 100%;
-            object-fit: contain;
-            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.7));
-        }
-
-        /* 3. النصوص العلوية */
-        .top-text {
-            position: absolute;
-            z-index: 5;
-            top: 38%;
-            left: 50%;
-            transform: translate(-50%, 0);
-            text-align: center;
-            width: 100%;
-        }
-
-        .script-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-size: 2rem;
-            color: #d4af37; /* ذهبي خافت */
-            opacity: 0;
-            animation: slideUp 1.5s ease-out forwards 1.5s;
-        }
-
-        /* --- واجهة المستخدم (UI Elements) --- */
-        .logo {
-            position: absolute; top: 40px; left: 40px;
-            font-weight: 700; letter-spacing: 2px; font-size: 1.2rem;
-            z-index: 10; opacity: 0; animation: fadeDown 1s forwards 2s;
+        /* --- الحاوية الرئيسية --- */
+        .stage {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 10;
+            transition: all 0.5s ease;
         }
         
-        .menu-icon {
-            position: absolute; top: 40px; right: 40px;
-            width: 30px; height: 20px;
-            display: flex; flex-direction: column; justify-content: space-between;
-            align-items: flex-end;
-            z-index: 10; cursor: pointer; opacity: 0; animation: fadeDown 1s forwards 2s;
-        }
-        .bar { height: 2px; background: #fff; border-radius: 2px; transition: 0.3s; }
-        .bar:nth-child(1) { width: 100%; }
-        .bar:nth-child(2) { width: 60%; }
-        .bar:nth-child(3) { width: 80%; }
-        .menu-icon:hover .bar { width: 100%; background: #d4af37; }
+        /* تأثير التغبيش عند فتح البطاقة */
+        .stage.blurred { filter: blur(15px); transform: scale(1.1); }
 
-        .page-num {
-            position: absolute; bottom: 40px; left: 40px;
-            font-family: 'Bebas Neue'; font-size: 2rem; color: #fff;
-            z-index: 10; opacity: 0; animation: fadeUp 1s forwards 2s;
-        }
-
-        .scroll-indicator {
-            position: absolute; bottom: 40px; right: 40px;
-            z-index: 10; opacity: 0; animation: fadeUp 1s forwards 2s;
-        }
-        .arrow-down {
-            width: 20px; height: 20px;
-            border-right: 2px solid #fff; border-bottom: 2px solid #fff;
-            transform: rotate(45deg);
-            animation: pulseArrow 2s infinite;
-        }
-
-        /* خط التنقل السفلي */
-        .nav-line-container {
-            position: absolute; bottom: 40px; left: 100px; right: 100px;
-            height: 1px; background: rgba(255,255,255,0.1);
-            z-index: 9;
-            opacity: 0;
-            animation: expandWidth 1.5s ease-out forwards 2.2s;
-        }
-        .nav-line-progress {
-            width: 30%; height: 100%; background: #fff;
-            position: absolute; left: 0;
-            box-shadow: 0 0 10px #fff;
-        }
-
-        /* --- زر الاستكشاف والوصف --- */
-        .center-ui {
-            position: absolute; bottom: 15%; left: 50%;
-            transform: translateX(-50%);
+        /* --- العنوان الرئيسي المتحرك (THE KING) --- */
+        .hero-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 15vw; /* حجم ضخم */
+            line-height: 1;
+            color: #ffffff; /* أبيض ناصع */
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.8), 0 0 60px rgba(255, 255, 255, 0.4);
             text-align: center;
-            z-index: 20;
-            width: 100%;
+            display: flex; gap: 10px; /* مسافة بين الكلمات */
+            position: relative;
+            z-index: 5;
         }
 
-        .desc-text {
-            font-family: 'Tajawal', sans-serif;
-            font-size: 0.9rem; color: #aaa;
-            margin-bottom: 20px;
-            opacity: 0; animation: fadeUp 1s forwards 2.5s;
+        /* تنسيق الحروف للحركة */
+        .word { display: flex; }
+        .char {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(100px); /* يبدأ من الأسفل */
+            animation: textCycle 6s ease-in-out infinite; /* حركة مستمرة */
+        }
+
+        /* --- القائمة العلوية --- */
+        .top-bar {
+            position: absolute; top: 40px; width: 90%;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 20;
+        }
+        .logo { font-family: 'Montserrat', sans-serif; font-weight: 700; letter-spacing: 2px; font-size: 1.2rem; }
+        .menu-btn div { width: 30px; height: 2px; background: #fff; margin: 6px 0; border-radius: 2px; transition: 0.3s; }
+        .menu-btn:hover div { background: #d4af37; width: 35px; }
+
+        /* --- الزر السفلي --- */
+        .bottom-ui {
+            position: absolute; bottom: 10%;
+            display: flex; flex-direction: column; align-items: center;
+            gap: 15px; z-index: 20;
         }
 
         .explore-btn {
-            background: transparent;
-            border: 1px solid rgba(255,255,255,0.3);
+            padding: 15px 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.5);
             color: #fff;
-            padding: 15px 40px;
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.8rem; letter-spacing: 3px;
+            font-size: 0.9rem; letter-spacing: 3px;
+            text-transform: uppercase;
             cursor: pointer;
-            transition: 0.4s;
             backdrop-filter: blur(5px);
-            opacity: 0; animation: popIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.8s;
-            position: relative; overflow: hidden;
+            transition: 0.4s;
+            border-radius: 50px;
+            animation: fadeIn 2s forwards;
         }
-        
-        .explore-btn::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: 0.5s;
+        .explore-btn:hover { background: #fff; color: #000; box-shadow: 0 0 40px rgba(255, 255, 255, 0.6); }
+
+        .role-text {
+            font-size: 0.9rem; color: #ccc; letter-spacing: 1px;
+            animation: fadeIn 2s forwards 0.5s; opacity: 0;
         }
-        .explore-btn:hover::before { left: 100%; }
-        .explore-btn:hover { border-color: #d4af37; color: #d4af37; box-shadow: 0 0 30px rgba(212,175,55,0.1); }
 
         /* =========================================
-           البطاقة الذكية (Modal) - نفس التصميم المطلوب
+           البطاقة الذكية (Modal)
            ========================================= */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 3000; display: none; justify-content: center; align-items: center;
         }
-        
         .active-modal { display: flex; }
 
         .digital-card {
             width: 90%; max-width: 400px;
-            background: rgba(8, 12, 20, 0.95);
-            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px;
-            padding: 40px 30px;
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px; padding: 40px 30px;
             color: #fff; text-align: right;
-            box-shadow: 0 0 80px rgba(0,0,0,1);
+            box-shadow: 0 0 50px rgba(0,0,0,1);
             transform: scale(0.8); opacity: 0;
             transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             max-height: 90vh; overflow-y: auto; scrollbar-width: none;
         }
-        .digital-card::-webkit-scrollbar { display: none; }
         .active-modal .digital-card { transform: scale(1); opacity: 1; }
 
-        .close-card { position: absolute; top: 20px; left: 20px; font-size: 24px; cursor: pointer; color: #666; transition: 0.3s; }
-        .close-card:hover { color: #d4af37; }
-
-        /* تفاصيل البطاقة */
-        .card-img-container { width: 110px; height: 110px; margin: 0 auto 20px; position: relative; display: flex; justify-content: center; align-items: center; }
-        .card-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #d4af37; z-index: 2; }
-        .pulse-ring { position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 1px solid #d4af37; opacity: 0; animation: ripple 2s infinite; }
-        .pulse-ring:nth-child(2) { animation-delay: 0.6s; }
-
-        .card-name { text-align: center; font-size: 1.8rem; font-family: 'Tajawal', sans-serif; font-weight: 700; color: #fff; margin-bottom: 5px; }
-        .card-role { text-align: center; font-size: 0.9rem; color: #888; margin-bottom: 25px; font-family: 'Montserrat', sans-serif; letter-spacing: 1px; }
-
-        .section-label { color: #d4af37; font-size: 0.9rem; font-weight: bold; margin-bottom: 15px; display: block; font-family: 'Tajawal', sans-serif; }
+        .close-card { position: absolute; top: 20px; left: 20px; font-size: 28px; cursor: pointer; color: #fff; }
         
-        .services-list { list-style: none; padding: 0; margin-bottom: 30px; }
+        .card-img-container { width: 100px; height: 100px; margin: 0 auto 20px; position: relative; display: flex; justify-content: center; align-items: center; }
+        .card-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #fff; }
+        
+        .services-list { list-style: none; padding: 0; margin-bottom: 25px; }
         .services-list li { 
-            background: rgba(255,255,255,0.03); padding: 10px 15px; border-radius: 8px; margin-bottom: 8px;
-            font-family: 'Tajawal', sans-serif; font-size: 0.9rem; color: #ddd;
-            display: flex; align-items: center; justify-content: space-between;
-            opacity: 0; animation: fadeSide 0.5s forwards;
+            background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; margin-bottom: 8px; font-size: 0.9rem; color: #eee; text-align: right;
         }
-        .services-list li::after { content: "←"; color: #d4af37; }
 
-        .social-icons { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; }
-        .s-link { width: 45px; height: 45px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; justify-content: center; align-items: center; transition: 0.3s; }
-        .s-link svg { width: 20px; fill: #aaa; transition: 0.3s; }
-        .s-link:hover { background: #d4af37; transform: translateY(-5px); }
+        .social-icons { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
+        .s-link { width: 45px; height: 45px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; justify-content: center; align-items: center; transition: 0.3s; }
+        .s-link:hover { background: #fff; }
+        .s-link svg { width: 22px; fill: #fff; }
         .s-link:hover svg { fill: #000; }
 
-        .cv-btn {
-            display: block; width: 100%; padding: 15px; background: transparent; border: 1px solid #d4af37;
-            color: #d4af37; text-align: center; border-radius: 10px; text-decoration: none; 
-            font-family: 'Tajawal', sans-serif; font-weight: bold; transition: 0.3s;
-        }
-        .cv-btn:hover { background: #d4af37; color: #000; }
-
-        /* Animation Timings */
-        .d-1 { animation-delay: 0.2s; } .d-2 { animation-delay: 0.4s; } .d-3 { animation-delay: 0.6s; } .d-4 { animation-delay: 0.8s; } .d-5 { animation-delay: 1.0s; }
+        .cv-btn { display: block; width: 100%; padding: 15px; background: #fff; color: #000; text-align: center; border-radius: 50px; text-decoration: none; font-weight: bold; }
 
         /* Keyframes */
-        @keyframes earthSpin { from { background-position: 0 0; } to { background-position: 200% 0; } }
-        @keyframes textReveal { from { opacity: 0; letter-spacing: 50px; filter: blur(20px); transform: translate(-50%, -40%); } to { opacity: 1; letter-spacing: 15px; filter: blur(0); transform: translate(-50%, -50%); } }
-        @keyframes fadeZoomIn { from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
-        @keyframes zeroGravity { 
-            0% { transform: translate(-50%, -50%) rotate(0deg); } 
-            25% { transform: translate(-48%, -52%) rotate(2deg); }
-            50% { transform: translate(-50%, -54%) rotate(0deg); } 
-            75% { transform: translate(-52%, -52%) rotate(-2deg); }
-            100% { transform: translate(-50%, -50%) rotate(0deg); } 
+        /* حركة النص: دخول من تحت -> ثبات -> خروج لفوق */
+        @keyframes textCycle {
+            0% { opacity: 0; transform: translateY(80px) scale(0.8); }
+            20% { opacity: 1; transform: translateY(0) scale(1); }
+            70% { opacity: 1; transform: translateY(0) scale(1); } /* فترة الثبات */
+            90% { opacity: 0; transform: translateY(-80px) scale(1.1); }
+            100% { opacity: 0; transform: translateY(-80px); }
         }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes expandWidth { from { width: 0; left: 50%; } to { width: calc(100% - 200px); left: 100px; } }
-        @keyframes pulseArrow { 0% { opacity: 0.5; transform: rotate(45deg) translate(0,0); } 50% { opacity: 1; transform: rotate(45deg) translate(5px, 5px); } 100% { opacity: 0.5; transform: rotate(45deg) translate(0,0); } }
-        @keyframes ripple { 0% { transform: scale(1); opacity: 0.8; border-width: 1px; } 100% { transform: scale(2.2); opacity: 0; border-width: 0px; } }
-        @keyframes fadeSide { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: translateX(0); } }
-        @keyframes twinkle { 0% { opacity: 0.4; } 100% { opacity: 0.8; } }
-        @keyframes popIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .big-title { font-size: 25vw; letter-spacing: 5px; }
-            .astronaut-container { width: 80vw; height: 50vh; }
-            .nav-line-container { left: 20px; right: 20px; animation-name: expandWidthMobile; }
-            .center-ui { bottom: 12%; }
-            @keyframes expandWidthMobile { from { width: 0; left: 50%; } to { width: calc(100% - 40px); left: 20px; } }
+        /* تأخير ظهور الحروف لعمل حركة الموجة */
+        .char:nth-child(1) { animation-delay: 0s; }
+        .char:nth-child(2) { animation-delay: 0.1s; }
+        .char:nth-child(3) { animation-delay: 0.2s; }
+        /* مسافة الكلمة الثانية */
+        .word:nth-child(2) .char:nth-child(1) { animation-delay: 0.4s; }
+        .word:nth-child(2) .char:nth-child(2) { animation-delay: 0.5s; }
+        .word:nth-child(2) .char:nth-child(3) { animation-delay: 0.6s; }
+        .word:nth-child(2) .char:nth-child(4) { animation-delay: 0.7s; }
+
+        /* Media Queries */
+        @media (max-width: 600px) {
+            .hero-title { font-size: 20vw; flex-direction: column; gap: 0; }
         }
     </style>
 </head>
 <body>
 
-    <!-- إطار السينما -->
-    <div class="cinema-frame">
+    <!-- فيديو الخلفية -->
+    <!-- تأكد من وضع ملف فيديو باسم video.mp4 في نفس المجلد -->
+    <video autoplay muted loop id="bg-video">
+        <source src="video.mp4" type="video/mp4">
+        <!-- رابط احتياطي من الإنترنت في حال لم تضع الفيديو الخاص بك -->
+        <source src="https://assets.codepen.io/1948355/space_walk.mp4" type="video/mp4">
+    </video>
+
+    <!-- واجهة الموقع -->
+    <div class="stage" id="mainStage">
         
-        <!-- خلفية النجوم -->
-        <div class="stars"></div>
-
-        <!-- الأرض المتحركة -->
-        <div class="earth-container">
-            <div class="earth-texture"></div>
-            <div class="earth-shadow"></div>
+        <div class="top-bar">
+            <div class="menu-btn"><div></div><div></div></div>
+            <div class="logo">MK</div>
         </div>
 
-        <!-- الشعار والقائمة -->
-        <div class="logo">MK</div>
-        <div class="menu-icon">
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
-        </div>
-
-        <!-- النص العملاق (الخلفية) -->
-        <div class="big-title">THE KING</div>
-
-        <!-- رائد الفضاء (المنتصف) -->
-        <div class="astronaut-container">
-            <!-- صورة رائد فضاء مفرغة عالية الجودة وتطفو -->
-            <img src="https://assets.codepen.io/1948355/astronaut.png" alt="Astronaut" class="astronaut-img">
-        </div>
-
-        <!-- النصوص العلوية -->
-        <div class="top-text">
-            <div class="script-title">Welcome to my World</div>
-        </div>
-
-        <!-- الواجهة السفلية -->
-        <div class="center-ui">
-            <div class="desc-text">
-                القيادة كنج • مطور ويب • خبير أتمتة
+        <!-- العنوان المتحرك (حرفاً حرفاً) -->
+        <div class="hero-title">
+            <div class="word">
+                <span class="char">T</span>
+                <span class="char">H</span>
+                <span class="char">E</span>
             </div>
-            <button class="explore-btn" onclick="openCard()">EXPLORE PROFILE</button>
+            <div class="word">
+                <span class="char">K</span>
+                <span class="char">I</span>
+                <span class="char">N</span>
+                <span class="char">G</span>
+            </div>
         </div>
 
-        <!-- أرقام الصفحات والمؤشرات -->
-        <div class="page-num">01</div>
-        <div class="nav-line-container">
-            <div class="nav-line-progress"></div>
-        </div>
-        <div class="scroll-indicator">
-            <div class="arrow-down"></div>
+        <div class="bottom-ui">
+            <div class="role-text">Developer & Automation Expert</div>
+            <button class="explore-btn" onclick="openCard()">EXPLORE PROFILE</button>
         </div>
 
     </div>
 
-    <!-- البطاقة الذكية (Modal) -->
+    <!-- البطاقة الذكية -->
     <div class="modal-overlay" id="cardModal">
         <div class="digital-card">
-            
             <span class="close-card" onclick="closeCard()">&times;</span>
-
+            
             <div class="card-img-container">
-                <div class="pulse-ring"></div>
-                <div class="pulse-ring"></div>
-                <!-- صورتك الشخصية -->
                 <img src="my-photo.jpg" alt="Profile" class="card-img">
             </div>
 
-            <div class="card-name">القيادة كنج</div>
-            <div class="card-role">Developer & Automation Expert</div>
+            <h2 style="text-align:center; margin-bottom:5px;">القيادة كنج</h2>
+            <p style="text-align:center; color:#888; margin-bottom:20px;">Web Developer</p>
 
-            <div style="margin: 20px 0;">
-                <span class="section-label">الخدمات:</span>
-                <ul class="services-list">
-                    <li class="d-1">تصميم مواقع</li>
-                    <li class="d-2">تصميم بوتات</li>
-                    <li class="d-3">برمجة اكواد</li>
-                    <li class="d-4">صنع مواقع خاصة</li>
-                    <li class="d-5">تحسين محركات البحث (SEO)</li>
-                </ul>
-            </div>
+            <h4 style="color:#fff; margin-bottom:10px;">الخدمات:</h4>
+            <ul class="services-list">
+                <li>تصميم مواقع احترافية</li>
+                <li>برمجة بوتات</li>
+                <li>تطوير أكواد</li>
+                <li>حلول تقنية</li>
+                <li>تحسين SEO</li>
+            </ul>
 
             <div class="social-icons">
                 <a href="https://wa.me/9944009144121" class="s-link" target="_blank"><svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2M12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15C10.56 20.15 9.11 19.76 7.85 19L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 15 3.8 13.47 3.8 11.91C3.81 7.37 7.5 3.67 12.05 3.67Z"/></svg></a>
@@ -421,27 +249,17 @@
     </div>
 
     <script>
-        const frame = document.querySelector('.cinema-frame');
+        const stage = document.getElementById('mainStage');
         const modal = document.getElementById('cardModal');
 
         function openCard() {
-            // تأثير التغبيش على الخلفية
-            frame.style.filter = "blur(10px) brightness(0.6)";
-            frame.style.transform = "scale(0.95)";
-            frame.style.transition = "all 0.5s";
-            
+            stage.classList.add('blurred');
             modal.classList.add('active-modal');
         }
-
         function closeCard() {
-            // إزالة التأثير
-            frame.style.filter = "none";
-            frame.style.transform = "scale(1)";
-            
+            stage.classList.remove('blurred');
             modal.classList.remove('active-modal');
         }
-
-        // إغلاق عند الضغط في الفراغ
         modal.addEventListener('click', (e) => {
             if (e.target === modal) closeCard();
         });
