@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Design | واجهة فخمة</title>
+    <style>
+        /* استيراد خط تجوال لدعم العربية بشكل احترافي */
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700&display=swap');
+
+        /* --- إعدادات أساسية --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #050505;
+            color: #ffffff;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden; /* لمنع التمرير، واجهة ثابتة تملأ الشاشة */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* --- الخلفية المتدرجة واللمسات --- */
+        .background-glow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000000 100%);
+            z-index: 1;
+        }
+
+        /* دوائر ذهبية ضبابية في الخلفية لإعطاء عمق */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            z-index: 2;
+            animation: floatOrb 10s infinite ease-in-out alternate;
+        }
+
+        .orb-1 {
+            width: 300px;
+            height: 300px;
+            background: #d4af37;
+            top: -50px;
+            left: -50px;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: #2c2c2c;
+            bottom: -100px;
+            right: -100px;
+            animation-delay: 2s;
+        }
+
+        /* --- الحاوية الرئيسية (Glassmorphism) --- */
+        .main-container {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 500px; /* يحافظ على شكل الموبايل 9:16 حتى على الشاشات الكبيرة */
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px;
+            
+            /* تأثير الزجاج */
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        /* --- النصوص --- */
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            
+            /* تدرج ذهبي للنص */
+            background: linear-gradient(135deg, #fff 20%, #d4af37 60%, #fff 90%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: shine 5s linear infinite;
+        }
+
+        p.description {
+            font-size: 1.1rem;
+            color: #cccccc;
+            font-weight: 300;
+            margin-bottom: 50px;
+            line-height: 1.6;
+            max-width: 90%;
+        }
+
+        /* --- الأزرار --- */
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .btn {
+            position: relative;
+            padding: 18px 30px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+            border-radius: 15px;
+            transition: all 0.4s ease;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        /* الزر الرئيسي (ذهبي شفاف) */
+        .btn-primary {
+            background: rgba(212, 175, 55, 0.15);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
+        }
+
+        .btn-primary:hover {
+            background: rgba(212, 175, 55, 0.9);
+            color: #000;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.6);
+            transform: translateY(-3px);
+            border-color: #d4af37;
+        }
+
+        /* الزر الثانوي (رمادي زجاجي) */
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #fff;
+            transform: translateY(-3px);
+        }
+
+        /* تأثير اللمعة عند التحويم */
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .btn:hover::after {
+            left: 100%;
+        }
+
+        /* --- عناصر زخرفية صغيرة --- */
+        .separator {
+            width: 60px;
+            height: 4px;
+            background: #d4af37;
+            margin-bottom: 30px;
+            border-radius: 2px;
+        }
+
+        /* --- التحركات (Animations) --- */
+        @keyframes shine {
+            to {
+                background-position: 200% center;
+            }
+        }
+
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(20px, 40px); }
+        }
+
+        /* دخول العناصر */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s forwards ease-out;
+        }
+
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+        .delay-4 { animation-delay: 0.8s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- JavaScript Canvas --- */
+        #particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        /* ميديا كويري للموبايل */
+        @media (max-width: 480px) {
+            h1 { font-size: 2.8rem; }
+            .main-container { width: 100%; height: 100%; border-radius: 0; border: none; background: rgba(0,0,0,0.2); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- الخلفية -->
+    <div class="background-glow"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <canvas id="particles"></canvas>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="main-container">
+        <!-- خط ذهبي صغير -->
+        <div class="separator fade-in-up"></div>
+
+        <!-- العنوان الرئيسي -->
+        <h1 class="fade-in-up delay-1">مستقبل<br>التصميم الرقمي</h1>
+
+        <!-- الوصف -->
+        <p class="description fade-in-up delay-2">
+            نحول أفكارك إلى واقع رقمي مبهر. استمتع بتجربة مستخدم فريدة مع واجهات عصرية تجمع بين الفخامة والأداء العالي.
+        </p>
+
+        <!-- الأزرار -->
+        <div class="btn-group fade-in-up delay-3">
+            <a href="#" class="btn btn-primary">ابدأ موقعك الآن</a>
+            <a href="#" class="btn btn-secondary">تصميم موقعك</a>
+        </div>
+    </main>
+
+    <script>
+        // تأثير الجزيئات الذهبية المتحركة (Particles)
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particlesArray = [];
+        const numberOfParticles = 60; // عدد الجزيئات
+
+        window.addEventListener('resize', function(){
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        class Particle {
+            constructor(){
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2; // حجم صغير جداً للفخامة
+                this.speedX = (Math.random() * 0.5) - 0.25;
+                this.speedY = (Math.random() * 0.5) - 0.25;
+                this.color = '#d4af37'; // لون ذهبي
+            }
+            update(){
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.size > 0.2) this.size -= 0.005; // وميض
+                if (this.size <= 0.2) this.size = Math.random() * 2; 
+
+                // إعادة تدوير الجزيئات عند خروجها من الشاشة
+                if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                }
+            }
+            draw(){
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = 0.6;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function init(){
+            for (let i = 0; i < numberOfParticles; i++){
+                particlesArray.push(new Particle());
+            }
+        }
+
+        function animate(){
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++){
+                particlesArray[i].update();
+                particlesArray[i].draw();
+            }
+            requestAnimationFrame(animate);
+        }
+
+        init();
+        animate();
+
+        // تأثير بسيط عند تحريك الماوس لإمالة الحاوية (3D Tilt Effect)
+        const container = document.querySelector('.main-container');
+        document.addEventListener('mousemove', (e) => {
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 40;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 40;
+            
+            // تطبيق التأثير فقط على الشاشات الكبيرة
+            if(window.innerWidth > 768) {
+                container.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+            }
+        });
+    </script>
+</body>
+</html>
